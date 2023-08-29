@@ -2,6 +2,9 @@ require('dotenv').config()
 const connectDB = require("./config/dbConnection")
 const express = require("express");
 const cookieParser = require('cookie-parser')
+const cors = require('cors');
+const corsOptions = require('./config/corsOptions');
+const credentials = require('./middleware/credentials');
 const { errorHandler } = require('./middleware/errorHandler');
 const { verifyJWT } = require('./middleware/verifyJWT');
 const app = express();
@@ -10,7 +13,9 @@ const PORT = process.env.PORT || 3500;
 //connect to DB
 connectDB()
 //Cross Origin Resource Sharing
-
+app.use(credentials);
+// Cross Origin Resource Sharing
+app.use(cors(corsOptions));
 //built-in middleware to handle url encoded form data
 app.use(express.urlencoded({ extended: false }))
 //to parse json data
